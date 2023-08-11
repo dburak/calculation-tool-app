@@ -1,11 +1,27 @@
-const express = require('express')
-const app = express()
-const port = 3003
+const express = require('express');
+const morgan = require('morgan')
+const app = express();
+const config = require('./utils/config');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+const usersRouter = require('./controllers/users');
+const loginRouter = require('./controllers/login');
+
+const mongoUrl = config.MONGODB_URI;
+mongoose.connect(mongoUrl).then(() => console.log('connected mongodb'));
+
+app.use(cors());
+app.use(express.json());
+app.use(morgan('dev'))
+
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.use('/api/users', usersRouter);
+app.use('/api/login', loginRouter);
+
+
+module.exports = app;
