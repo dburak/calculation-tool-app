@@ -9,8 +9,6 @@ const AlertBox = () => {
 
   if (!alert) return null;
 
-  console.log(alert);
-
   return (
     <div
       style={{
