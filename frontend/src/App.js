@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+import Navbar from './components/Navbar';
+import AlertBox from './components/AlertBox';
 
 const App = () => {
   return (
-    <div>App</div>
-  )
-}
+    <>
+      <Navbar />
+      <div>App Page</div>
+      <AlertBox />
+    </>
+  );
+};
 
-export default App
+export default App;

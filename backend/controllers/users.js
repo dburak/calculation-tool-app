@@ -21,11 +21,11 @@ usersRouter.get('/:id', async (request, response) => {
 });
 
 usersRouter.post('/', async (request, response, next) => {
-  const { username, name, password } = request.body;
+  const { email, name, password } = request.body;
 
-  if (username.length < 3 || password.length < 3) {
+  if (email.length < 3 || password.length < 3) {
     return response.status(400).json({
-      error: 'Username and password must be at least 3 characters long.',
+      error: 'email and password must be at least 3 characters long.',
     });
   }
 
@@ -33,7 +33,7 @@ usersRouter.post('/', async (request, response, next) => {
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
   const user = new User({
-    username,
+    email,
     name,
     passwordHash,
     isAdmin: false
