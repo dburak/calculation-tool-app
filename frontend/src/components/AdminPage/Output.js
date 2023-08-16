@@ -1,5 +1,8 @@
 import React from 'react';
 import { Button, TextField, Typography, Box } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import ImageUpload from '../shared/ImageUpload';
 
 const Output = ({
   title,
@@ -28,6 +31,10 @@ const Output = ({
     onOutputChange(title, description, newOutputValues, outputUnit);
   };
 
+  const handleImageInput = (pickedFile) => {
+    onOutputChange(title, description, outputValues, outputUnit, pickedFile);
+  };
+
   return (
     <Box>
       <Typography variant='subtitle2' gutterBottom>
@@ -54,14 +61,23 @@ const Output = ({
           onOutputChange(title, e.target.value, outputValues, outputUnit)
         }
       />
+      <ImageUpload onInputChange={handleImageInput} />
       <Box mt={2}>
-        <Button variant='contained' size='small' onClick={handleAddOutput}>
+        <Button
+          startIcon={<AddIcon />}
+          variant='contained'
+          size='medium'
+          onClick={handleAddOutput}
+          fullWidth
+        >
           Add Output
         </Button>
       </Box>
       {outputValues.map((output, localIndex) => (
         <Box key={localIndex} mt={2}>
-          <Typography variant='subtitle2'>Placeholder:</Typography>
+          <Typography variant='subtitle2'>
+            {localIndex + 1}. Placeholder:
+          </Typography>
           <TextField
             variant='outlined'
             size='small'
@@ -71,7 +87,9 @@ const Output = ({
               handleLocalOutputChange(localIndex, 'placeholder', e.target.value)
             }
           />
-          <Typography variant='subtitle2'>Variable:</Typography>
+          <Typography variant='subtitle2'>
+            {localIndex + 1}. Variable:
+          </Typography>
           <TextField
             variant='outlined'
             size='small'
@@ -81,13 +99,19 @@ const Output = ({
               handleLocalOutputChange(localIndex, 'variable', e.target.value)
             }
           />
-          <Button
-            variant='contained'
-            size='small'
-            onClick={() => handleRemoveOutput(localIndex)}
-          >
-            Remove Output
-          </Button>
+          {outputValues.length > 1 && (
+            <Box display='flex' alignItems='center' mt={1}>
+              <Button
+                startIcon={<DeleteIcon />}
+                variant='contained'
+                size='medium'
+                color='secondary'
+                onClick={() => handleRemoveOutput(localIndex)}
+              >
+                Remove Output
+              </Button>
+            </Box>
+          )}
         </Box>
       ))}
       <Box mt={2}>

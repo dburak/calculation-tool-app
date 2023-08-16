@@ -3,14 +3,14 @@ const usersRouter = require('express').Router();
 const User = require('../models/user');
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
+  const users = await User.find({});
   response.json(users);
 });
 
 usersRouter.get('/:id', async (request, response) => {
   const userId = request.params.id;
   try {
-    const user = await User.findById(userId)
+    const user = await User.findById(userId);
     if (!user) {
       return response.status(404).json({ error: 'User not found' });
     }
@@ -36,7 +36,6 @@ usersRouter.post('/', async (request, response, next) => {
     email,
     name,
     passwordHash,
-    isAdmin: false
   });
 
   try {
@@ -44,7 +43,7 @@ usersRouter.post('/', async (request, response, next) => {
 
     response.status(201).json(savedUser);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 });
 

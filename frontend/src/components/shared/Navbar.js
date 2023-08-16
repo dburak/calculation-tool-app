@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useDispatch } from 'react-redux';
-import { setReduxLogout } from '../reducers/loginReducer';
+import { setReduxLogout } from '../../reducers/loginReducer';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({ user }) => {
@@ -22,8 +22,14 @@ const Navbar = ({ user }) => {
       <AppBar position='static'>
         <Toolbar>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            Calculation App
+            Calculation Tool
           </Typography>
+          <Button href='/app' color='inherit'>
+              App
+            </Button>
+            <Button href='/admin' color='inherit'>
+              Configuration Page
+            </Button>
           {!user ? (
             <Button href='/login' color='inherit'>
               Login

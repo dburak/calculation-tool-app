@@ -1,5 +1,10 @@
 import React from 'react';
 import { Button, TextField, Typography, Box } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import AlertBox from '../shared/AlertBox';
+
+import ImageUpload from '../shared/ImageUpload';
 
 const Inputs = ({ index, title, description, inputValues, onInputChange }) => {
   const handleAddInput = () => {
@@ -20,6 +25,10 @@ const Inputs = ({ index, title, description, inputValues, onInputChange }) => {
     const newInputValues = [...inputValues];
     newInputValues[localIndex][field] = value;
     onInputChange(index, title, description, newInputValues);
+  };
+
+  const handleImageInput = (pickedFile) => {
+    onInputChange(index, title, description, inputValues, pickedFile);
   };
 
   return (
@@ -48,14 +57,23 @@ const Inputs = ({ index, title, description, inputValues, onInputChange }) => {
           onInputChange(index, title, e.target.value, inputValues)
         }
       />
+      <ImageUpload onInputChange={handleImageInput} />
       <Box mt={2}>
-        <Button variant='contained' size='small' onClick={handleAddInput}>
+        <Button
+          startIcon={<AddIcon />}
+          variant='contained'
+          size='medium'
+          onClick={handleAddInput}
+          fullWidth
+        >
           Add Input
         </Button>
       </Box>
       {inputValues.map((input, localIndex) => (
         <Box key={localIndex} mt={2}>
-          <Typography variant='subtitle2'>Placeholder:</Typography>
+          <Typography variant='subtitle2'>
+            {localIndex + 1}. Placeholder:
+          </Typography>
           <TextField
             variant='outlined'
             size='small'
@@ -65,7 +83,9 @@ const Inputs = ({ index, title, description, inputValues, onInputChange }) => {
               handleLocalInputChange(localIndex, 'placeholder', e.target.value)
             }
           />
-          <Typography variant='subtitle2'>Variable:</Typography>
+          <Typography variant='subtitle2'>
+            {localIndex + 1}. Variable:
+          </Typography>
           <TextField
             variant='outlined'
             size='small'
@@ -75,15 +95,22 @@ const Inputs = ({ index, title, description, inputValues, onInputChange }) => {
               handleLocalInputChange(localIndex, 'variable', e.target.value)
             }
           />
-          <Button
-            variant='contained'
-            size='small'
-            onClick={() => handleRemoveInput(localIndex)}
-          >
-            Remove Input
-          </Button>
+          {inputValues.length > 1 && (
+            <Box display='flex' alignItems='center' mt={1}>
+              <Button
+                startIcon={<DeleteIcon />}
+                variant='contained'
+                size='medium'
+                color='secondary'
+                onClick={() => handleRemoveInput(localIndex)}
+              >
+                Remove Input
+              </Button>
+            </Box>
+          )}
         </Box>
       ))}
+      <AlertBox />
     </Box>
   );
 };

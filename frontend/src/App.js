@@ -10,10 +10,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { setReduxAuth } from './reducers/loginReducer';
 
-import LoginPage from './components/LoginPage';
-import AdminPage from './components/AdminPage';
-import CalculationPage from './components/CalculationPage';
-import Navbar from './components/Navbar';
+import LoginPage from './components/LoginPage/LoginPage';
+import AdminPage from './components/AdminPage/AdminPage';
+import CalculationPage from './components/CalculationPage/CalculationPage';
+import Navbar from './components/shared/Navbar';
 
 const App = () => {
   const dispatch = useDispatch();
