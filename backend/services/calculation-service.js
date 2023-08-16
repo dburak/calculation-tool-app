@@ -1,10 +1,7 @@
-const calculationRouter = require('express').Router();
 const math = require('mathjs');
 
-calculationRouter.post('/', async (request, response) => {
-  const { formulaList, inputValues } = request.body;
+performCalculations = (formulaList, inputValues) => {
   const results = {};
-
   const evaluatedValues = {};
 
   Object.keys(inputValues).forEach((key) => {
@@ -40,7 +37,9 @@ calculationRouter.post('/', async (request, response) => {
     }
   });
 
-  response.json(results);
-});
+  return results;
+};
 
-module.exports = calculationRouter;
+module.exports = {
+  performCalculations,
+};

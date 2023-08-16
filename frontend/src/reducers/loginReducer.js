@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import loginService from '../services/login';
+import configurationService from '../services/configuration';
 
 const loginSlice = createSlice({
   name: 'login',
@@ -24,6 +25,7 @@ export const setReduxLogin = (email, password) => {
 
 export const setReduxAuth = (user) => {
   return async (dispatch) => {
+    configurationService.setToken(user.token);
     dispatch(setUser(user));
   };
 };

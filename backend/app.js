@@ -6,10 +6,12 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
 
-const usersRouter = require('./controllers/users');
-const loginRouter = require('./controllers/login');
-const configurationsRouter = require('./controllers/configurations');
-const calculationRouter = require('./controllers/calculation');
+const usersRouter = require('./routes/users');
+const loginRouter = require('./routes/login');
+const configurationsRouter = require('./routes/configurations');
+const calculationRouter = require('./routes/calculation');
+
+const errorHandler = require('./middleware/error-handler');
 
 const mongoUrl = config.MONGODB_URI;
 mongoose.connect(mongoUrl).then(() => console.log('connected mongodb'));
@@ -28,5 +30,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/configurations', configurationsRouter);
 app.use('/api/calculation', calculationRouter);
+
+app.use(errorHandler);
 
 module.exports = app;
