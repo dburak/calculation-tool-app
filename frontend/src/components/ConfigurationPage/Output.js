@@ -8,31 +8,38 @@ const Output = ({
   title,
   description,
   outputValues,
+  image,
   outputUnit,
   onOutputChange,
 }) => {
   const handleAddOutput = () => {
     const newOutput = { placeholder: '', variable: '' };
     const newOutputValues = [...outputValues, newOutput];
-    onOutputChange(title, description, newOutputValues, outputUnit);
+    onOutputChange(title, description, newOutputValues, outputUnit, image);
   };
 
   const handleRemoveOutput = (localIndex) => {
     if (outputValues.length > 1) {
       const newOutputValues = [...outputValues];
       newOutputValues.splice(localIndex, 1);
-      onOutputChange(title, description, newOutputValues, outputUnit);
+      onOutputChange(title, description, newOutputValues, outputUnit, image);
     }
   };
 
   const handleLocalOutputChange = (localIndex, field, value) => {
     const newOutputValues = [...outputValues];
-    newOutputValues[localIndex][field] = value;
-    onOutputChange(title, description, newOutputValues, outputUnit);
+    newOutputValues[localIndex] = {
+      ...newOutputValues[localIndex],
+      [field]: value,
+    };
+    onOutputChange(title, description, newOutputValues, outputUnit, image);
   };
 
-  const handleImageInput = (pickedFile) => {
-    onOutputChange(title, description, outputValues, outputUnit, pickedFile);
+  const handleImageInput = (image) => {
+    onOutputChange(title, description, outputValues, outputUnit, {
+      image,
+      index: `outputImage`,
+    });
   };
 
   return (
@@ -46,7 +53,13 @@ const Output = ({
         fullWidth
         value={title}
         onChange={(e) =>
-          onOutputChange(e.target.value, description, outputValues, outputUnit)
+          onOutputChange(
+            e.target.value,
+            description,
+            outputValues,
+            outputUnit,
+            image
+          )
         }
       />
       <Typography variant='subtitle2' gutterBottom>
@@ -58,10 +71,10 @@ const Output = ({
         fullWidth
         value={description}
         onChange={(e) =>
-          onOutputChange(title, e.target.value, outputValues, outputUnit)
+          onOutputChange(title, e.target.value, outputValues, outputUnit, image)
         }
       />
-      <ImageUpload onInputChange={handleImageInput} />
+      <ImageUpload onInputChange={handleImageInput} image={image} />
       <Box mt={2}>
         <Button
           startIcon={<AddIcon />}

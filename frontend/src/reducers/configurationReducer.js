@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import configurationService from '../services/configuration';
+import calculationService from '../services/calculation';
 
 const configurationSlice = createSlice({
   name: 'configuration',
@@ -17,20 +18,36 @@ const configurationSlice = createSlice({
   },
 });
 
-export const setReduxConfig = (inputPages, outputPage, formulaList) => {
+export const saveReduxConfig = (inputPages, outputPage, formulaList) => {
   return async (dispatch) => {
     let formData = new FormData();
+    const formulaCheckingData = {};
 
     inputPages.forEach((page) => {
-      if (page.image) {
-        formData.append('image', page.image);
+      page.inputValues.forEach((inputValue) => {
+        formulaCheckingData[inputValue.variable] = '1';
+      });
+    });
+
+    inputPages.forEach((page) => {
+      if (page.image.image) {
+        formData.append('image', page.image.image);
+        formData.append('imageIndexArray', page.image.index);
+      } else {
+        formData.append('imageIndexArray', undefined);
       }
     });
-    formData.append('image', outputPage.image);
+    formData.append('image', outputPage.image.image);
+    formData.append('imageIndexArray', outputPage.image.index);
 
     formData.append('inputPages', JSON.stringify(inputPages));
     formData.append('outputPage', JSON.stringify(outputPage));
     formData.append('formulaList', JSON.stringify(formulaList));
+
+    await calculationService.sendCalculation({
+      formulaList,
+      inputValues: formulaCheckingData,
+    });
 
     const newConfig = await configurationService.sendConfig(formData);
     dispatch(setConfiguration(newConfig));
@@ -46,6 +63,7 @@ export const getReduxConfig = () => {
 
 export const removeReduxConfig = () => {
   return async (dispatch) => {
+    await configurationService.deleteConfig();
     dispatch(removeConfiguration());
   };
 };

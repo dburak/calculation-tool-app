@@ -1,30 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getReduxConfig } from '../../reducers/configurationReducer';
-import { Box, Button, Container, LinearProgress } from '@mui/material';
-import PageComponent from './PageComponent';
+import {
+  Box,
+  Button,
+  Container,
+  LinearProgress,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
+import InputsComponent from './InputsComponent';
 import OutputComponent from './OutputComponent';
+import AlertBox from '../shared/AlertBox';
+
+import { getReduxConfig } from '../../reducers/configurationReducer';
+import { setReduxAlert } from '../../reducers/alertReducer';
 import calculationService from '../../services/calculation';
 
 const CalculationPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [inputValues, setInputValues] = useState({});
   const [calculatedValues, setCalculatedValues] = useState({});
+  const [isLoadingConfigs, setIsLoadingConfigs] = useState(true);
 
   const dispatch = useDispatch();
   const configs = useSelector((state) => state.configuration);
+
   const { inputPages, outputPage, formulaList } = configs || {
     inputPages: [],
     outputPage: null,
     formulaList: [],
   };
-
   useEffect(() => {
-    dispatch(getReduxConfig());
+    dispatch(getReduxConfig())
+      .then(() => setIsLoadingConfigs(false))
+      .catch(() => setIsLoadingConfigs(false));
   }, [dispatch]);
 
   useEffect(() => {
-    if (currentPage === inputPages.length) {
+    if (currentPage === inputPages.length && inputPages.length > 0) {
       calculationService
         .sendCalculation({ formulaList, inputValues })
         .then((res) => setCalculatedValues(res));
@@ -33,7 +46,25 @@ const CalculationPage = () => {
 
   const handleNext = () => {
     if (currentPage < inputPages.length) {
-      setCurrentPage(currentPage + 1);
+      const currentPageInputs = inputPages[currentPage].inputValues;
+      const hasEmptyOrNaNInput = currentPageInputs.some((input) => {
+        const inputValue = inputValues[input.variable];
+        return inputValue === '' || isNaN(inputValue);
+      });
+
+      if (!hasEmptyOrNaNInput) {
+        setCurrentPage(currentPage + 1);
+      } else {
+        dispatch(
+          setReduxAlert(
+            {
+              message: 'Please fill in all required fields with valid numbers.',
+              type: 'error',
+            },
+            4
+          )
+        );
+      }
     }
   };
 
@@ -50,8 +81,38 @@ const CalculationPage = () => {
     }));
   };
 
+  if (isLoadingConfigs) {
+    return (
+      <Box
+        display='flex'
+        alignItems='center'
+        justifyContent='center'
+        minHeight='90vh'
+        minWidth='100vw'
+        padding='24px'
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   if (!configs) {
-    return <div>Loading...</div>;
+    return (
+      <Container
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '90vh',
+          minWidth: '100vw',
+          padding: '24px',
+        }}
+      >
+        <Typography variant='h5'>
+          No Calculation Tool has been loaded yet.
+        </Typography>
+      </Container>
+    );
   }
 
   const isLastPage = currentPage === inputPages.length;
@@ -87,7 +148,7 @@ const CalculationPage = () => {
           <img
             src={inputPages[currentPage].image}
             alt={`Page ${currentPage + 1}`}
-            style={{ maxWidth: '100%', minHeight: '97%', borderRadius: '4px' }}
+            style={{ maxWidth: '90%', minHeight: '90%', borderRadius: '4px' }}
           />
         ) : (
           <img
@@ -114,7 +175,7 @@ const CalculationPage = () => {
             currentPage={currentPage}
           />
         ) : (
-          <PageComponent
+          <InputsComponent
             page={inputPages[currentPage]}
             inputValues={inputValues}
             onInputChange={handleInputChange}
@@ -145,6 +206,7 @@ const CalculationPage = () => {
           </Button>
         </Box>
       </Box>
+      <AlertBox />
     </Container>
   );
 };

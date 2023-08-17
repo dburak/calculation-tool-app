@@ -6,11 +6,20 @@ router.post('/', async (request, response) => {
   const { formulaList, inputValues } = request.body;
 
   try {
-    const results = await calculationService.performCalculations(
+    let results = await calculationService.performCalculations(
       formulaList,
       inputValues
     );
-    response.json(results);
+
+    for (const key in results) {
+      if (results.hasOwnProperty(key) && results[key] === 'Calculation Error') {
+        results = null;
+      }
+    }
+
+    results
+      ? response.json(results)
+      : response.status(500).json({ error: 'Internal Server Error' });
   } catch (error) {
     console.error(error);
     response.status(500).json({ error: 'Internal Server Error' });

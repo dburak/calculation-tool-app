@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setReduxAuth } from './reducers/loginReducer';
 
 import LoginPage from './components/LoginPage/LoginPage';
-import AdminPage from './components/AdminPage/AdminPage';
+import AdminPage from './components/ConfigurationPage/ConfigurationPage';
 import CalculationPage from './components/CalculationPage/CalculationPage';
 import Navbar from './components/shared/Navbar';
 

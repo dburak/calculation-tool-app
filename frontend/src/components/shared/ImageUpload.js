@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Button, Box } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-const ImageUpload = ({ onInputChange }) => {
+const ImageUpload = ({ onInputChange, image }) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
 
@@ -10,6 +10,11 @@ const ImageUpload = ({ onInputChange }) => {
 
   useEffect(() => {
     if (!file) {
+      if (image) {
+        setPreviewUrl(image);
+      } else {
+        setPreviewUrl(null);
+      }
       return;
     }
     const fileReader = new FileReader();
@@ -17,7 +22,7 @@ const ImageUpload = ({ onInputChange }) => {
       setPreviewUrl(fileReader.result);
     };
     fileReader.readAsDataURL(file);
-  }, [file]);
+  }, [file, image]);
 
   const handlePick = ({ target }) => {
     let pickedFile;
@@ -38,8 +43,11 @@ const ImageUpload = ({ onInputChange }) => {
   return (
     <Box mt={2}>
       <Box mt={2}>
-        {previewUrl && <img src={previewUrl} alt='Preview' width={160} />}
-        {!previewUrl && <p>Please pick an image.</p>}
+        {previewUrl ? (
+          <img src={previewUrl} alt='Preview' width={160} />
+        ) : (
+          <p>Please pick an image.</p>
+        )}
       </Box>
       <Button
         startIcon={<CloudUploadIcon />}

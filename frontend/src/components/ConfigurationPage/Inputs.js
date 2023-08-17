@@ -6,29 +6,43 @@ import AlertBox from '../shared/AlertBox';
 
 import ImageUpload from '../shared/ImageUpload';
 
-const Inputs = ({ index, title, description, inputValues, onInputChange }) => {
+const Inputs = ({
+  index,
+  title,
+  description,
+  inputValues,
+  onInputChange,
+  image,
+}) => {
   const handleAddInput = () => {
     const newInput = { placeholder: '', variable: '' };
     const newInputValues = [...inputValues, newInput];
-    onInputChange(index, title, description, newInputValues);
+    onInputChange(index, title, description, newInputValues, image);
   };
 
   const handleRemoveInput = (localIndex) => {
     if (inputValues.length > 1) {
       const newInputValues = [...inputValues];
       newInputValues.splice(localIndex, 1);
-      onInputChange(index, title, description, newInputValues);
+      onInputChange(index, title, description, newInputValues, image);
     }
   };
 
   const handleLocalInputChange = (localIndex, field, value) => {
     const newInputValues = [...inputValues];
-    newInputValues[localIndex][field] = value;
-    onInputChange(index, title, description, newInputValues);
+    newInputValues[localIndex] = {
+      ...newInputValues[localIndex],
+      [field]: value,
+    };
+
+    onInputChange(index, title, description, newInputValues, image);
   };
 
-  const handleImageInput = (pickedFile) => {
-    onInputChange(index, title, description, inputValues, pickedFile);
+  const handleImageInput = (image) => {
+    onInputChange(index, title, description, inputValues, {
+      image,
+      index: `inputIndex ${index}`,
+    });
   };
 
   return (
@@ -42,7 +56,7 @@ const Inputs = ({ index, title, description, inputValues, onInputChange }) => {
         fullWidth
         value={title}
         onChange={(e) =>
-          onInputChange(index, e.target.value, description, inputValues)
+          onInputChange(index, e.target.value, description, inputValues, image)
         }
       />
       <Typography variant='subtitle2' gutterBottom>
@@ -54,10 +68,10 @@ const Inputs = ({ index, title, description, inputValues, onInputChange }) => {
         fullWidth
         value={description}
         onChange={(e) =>
-          onInputChange(index, title, e.target.value, inputValues)
+          onInputChange(index, title, e.target.value, inputValues, image)
         }
       />
-      <ImageUpload onInputChange={handleImageInput} />
+      <ImageUpload onInputChange={handleImageInput} image={image} />
       <Box mt={2}>
         <Button
           startIcon={<AddIcon />}

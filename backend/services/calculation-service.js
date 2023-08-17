@@ -4,8 +4,19 @@ performCalculations = (formulaList, inputValues) => {
   const results = {};
   const evaluatedValues = {};
 
-  Object.keys(inputValues).forEach((key) => {
-    const inputFormula = inputValues[key];
+  const lowerCaseFormulaList = formulaList.map((formula) =>
+    formula.toLowerCase()
+  );
+
+  const lowerCaseInputValues = Object.fromEntries(
+    Object.entries(inputValues).map(([key, value]) => [
+      key,
+      value.toLowerCase(),
+    ])
+  );
+
+  Object.keys(lowerCaseInputValues).forEach((key) => {
+    const inputFormula = lowerCaseInputValues[key];
     try {
       const inputResult = math.evaluate(inputFormula, evaluatedValues);
       evaluatedValues[key] = inputResult;
@@ -15,7 +26,7 @@ performCalculations = (formulaList, inputValues) => {
     }
   });
 
-  formulaList.forEach((formula) => {
+  lowerCaseFormulaList.forEach((formula) => {
     const [formulaKey, formulaExpression] = formula
       .split('=')
       .map((str) => str.trim());
