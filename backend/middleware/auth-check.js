@@ -3,7 +3,7 @@ const config = require('../utils/config');
 
 const tokenExtractor = (request, response, next) => {
   const authorization = request.headers.authorization;
-  console.log(authorization);
+
   if (authorization && authorization.startsWith('Bearer ')) {
     request.token = authorization.replace('Bearer ', '');
     next();

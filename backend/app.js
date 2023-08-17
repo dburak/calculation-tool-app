@@ -17,7 +17,22 @@ const mongoUrl = config.MONGODB_URI;
 mongoose.connect(mongoUrl).then(() => console.log('connected mongodb'));
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: [
+      'Authorization',
+      'Origin',
+      'X-Requested-With',
+      'Content-Type',
+      'Accept',
+      'Access-Control-Request-Method',
+      'Access-Control-Request-Headers',
+      'Cache-Control',
+    ],
+  })
+);
 app.use(morgan('dev'));
 
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));

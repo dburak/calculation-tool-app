@@ -15,7 +15,7 @@ const getConfigs = async () => {
 const sendConfig = async (credentials) => {
   const response = await axios.put(`${baseUrl}/configurations`, credentials, {
     headers: {
-      Authorization: token,
+      authorization: token,
       'Content-Type': 'multipart/form-data',
     },
   });

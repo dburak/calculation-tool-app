@@ -18,8 +18,8 @@ configurationsRouter.get('/', async (request, response) => {
 // Therefore, we can use the PUT method to both create and update purpose.
 configurationsRouter.put(
   '/',
-  authCheck.tokenExtractor,
-  authCheck.userExtractor,
+  // authCheck.tokenExtractor,
+  // authCheck.userExtractor,
   fileUpload.array('image'),
   async (request, response) => {
     try {
