@@ -30,6 +30,7 @@ const CalculationPage = () => {
     outputPage: null,
     formulaList: [],
   };
+
   useEffect(() => {
     dispatch(getReduxConfig())
       .then(() => setIsLoadingConfigs(false))

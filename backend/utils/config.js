@@ -12,5 +12,5 @@ module.exports = {
   MONGODB_URI,
   PORT,
   SECRET,
-  HOST_URL
+  HOST_URL,
 };

@@ -20,10 +20,6 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
 
-app.get('/', (req, res) => {
-  res.send('OK');
-});
-
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use('/api/users', usersRouter);
@@ -32,5 +28,10 @@ app.use('/api/configurations', configurationsRouter);
 app.use('/api/calculation', calculationRouter);
 
 app.use(errorHandler);
+
+app.use(express.static(path.join(__dirname, '/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/build/index.html'));
+});
 
 module.exports = app;
