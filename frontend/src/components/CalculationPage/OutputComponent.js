@@ -13,7 +13,8 @@ const OutputComponent = ({ outputPage, calculatedValues }) => {
           <Box key={outputValue._id} mt={4}>
             <Typography key={outputValue._id} variant='body1' component='p'>
               <strong>{outputValue.placeholder}</strong>:{' '}
-              {calculatedValues[outputValue.variable]} {outputPage.outputUnit}
+              {calculatedValues[outputValue.variable.toLowerCase()]}{' '}
+              {outputPage.outputUnit}
             </Typography>
           </Box>
         ))}

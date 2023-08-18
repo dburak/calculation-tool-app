@@ -15,9 +15,6 @@ performCalculations = (formulaList, inputValues) => {
     ])
   );
 
-  console.log(lowerCaseFormulaList);
-  console.log(lowerCaseInputValues);
-
   Object.keys(lowerCaseInputValues).forEach((key) => {
     const inputFormula = lowerCaseInputValues[key];
     try {
