@@ -135,7 +135,13 @@ const Output = ({
           fullWidth
           value={outputUnit}
           onChange={(e) =>
-            onOutputChange(title, description, outputValues, e.target.value)
+            onOutputChange(
+              title,
+              description,
+              outputValues,
+              e.target.value,
+              image
+            )
           }
         />
       </Box>
