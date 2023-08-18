@@ -39,9 +39,11 @@ const CalculationPage = () => {
 
   useEffect(() => {
     if (currentPage === inputPages.length && inputPages.length > 0) {
+      setIsLoadingConfigs(true);
       calculationService
         .sendCalculation({ formulaList, inputValues })
-        .then((res) => setCalculatedValues(res));
+        .then((res) => setCalculatedValues(res))
+        .then(() => setIsLoadingConfigs(false));
     }
   }, [currentPage, inputPages.length, formulaList, inputValues]);
 
