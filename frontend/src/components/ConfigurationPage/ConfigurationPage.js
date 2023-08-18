@@ -128,22 +128,25 @@ const ConfigurationPage = () => {
   };
 
   const handleSave = () => {
+    setIsLoading(true);
     dispatch(saveReduxConfig(inputPages, outputPage, formulaList))
       .then(() => {
-        setIsLoading(true);
         dispatch(getReduxConfig())
-          .then(() => setIsLoading(false))
           .then(() => {
             setShowInputs(false);
             dispatch(
               setReduxAlert(
                 {
-                  message: 'Your configuration have been successfully saved.',
+                  message: 'Your configuration has been successfully saved.',
                   type: 'success',
                 },
                 4
               )
             );
+          })
+          .catch((error) => {})
+          .finally(() => {
+            setIsLoading(false);
           });
       })
       .catch((error) => {
@@ -155,9 +158,12 @@ const ConfigurationPage = () => {
             },
             4
           )
-        );
+        ).finally(() => {
+          setIsLoading(false);
+        });
       });
   };
+
   const handleDelete = () => {
     dispatch(removeReduxConfig())
       .then(() => {
@@ -188,22 +194,28 @@ const ConfigurationPage = () => {
       });
   };
 
-  if (isLoading) {
-    return (
-      <Container>
-        <Box
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-          height='100vh'
-        >
-          <CircularProgress />
-        </Box>
-      </Container>
-    );
-  }
   return (
     <Container>
+      <Container>
+        {isLoading && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 9999,
+            }}
+          >
+            <CircularProgress />
+          </div>
+        )}
+      </Container>
       <Typography
         mt={2}
         variant='h4'

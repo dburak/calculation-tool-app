@@ -84,20 +84,6 @@ const CalculationPage = () => {
     }));
   };
 
-  if (isLoadingConfigs) {
-    return (
-      <Box
-        display='flex'
-        alignItems='center'
-        justifyContent='center'
-        minHeight='90vh'
-        minWidth='100vw'
-        padding='24px'
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   if (!configs) {
     return (
@@ -121,7 +107,26 @@ const CalculationPage = () => {
   const isLastPage = currentPage === inputPages.length;
 
   return (
-    <Container
+    <><Container>
+      {isLoadingConfigs && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 9999,
+          }}
+        >
+          <CircularProgress />
+        </div>
+      )}
+    </Container><Container
       style={{
         display: 'grid',
         gridTemplateColumns: '1.5fr 1fr',
@@ -130,87 +135,82 @@ const CalculationPage = () => {
         padding: '24px',
       }}
     >
-      <Box
-        mt={2}
-        mb={2}
-        style={{
-          padding: '0 64px',
-        }}
-      >
-        <LinearProgress
-          variant='determinate'
-          value={(currentPage / inputPages.length) * 100}
+        <Box
+          mt={2}
+          mb={2}
           style={{
-            height: '8px',
-            borderRadius: '16px',
-            marginBottom: '16px',
-            marginTop: '6px',
+            padding: '0 64px',
           }}
-        />
-        {!isLastPage ? (
-          <img
-            src={inputPages[currentPage].image}
-            alt={`Page ${currentPage + 1}`}
-            style={{ maxWidth: '90%', minHeight: '90%', borderRadius: '4px' }}
-          />
-        ) : (
-          <img
-            src={outputPage.image}
-            alt={`Page ${currentPage + 1}`}
-            style={{ maxWidth: '100%', minHeight: '97%', borderRadius: '4px' }}
-          />
-        )}
-      </Box>
-
-      <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '0 32px',
-        }}
-      >
-        {isLastPage ? (
-          <OutputComponent
-            outputPage={outputPage}
-            calculatedValues={calculatedValues}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
-          />
-        ) : (
-          <InputsComponent
-            page={inputPages[currentPage]}
-            inputValues={inputValues}
-            onInputChange={handleInputChange}
-          />
-        )}
+        >
+          <LinearProgress
+            variant='determinate'
+            value={(currentPage / inputPages.length) * 100}
+            style={{
+              height: '8px',
+              borderRadius: '16px',
+              marginBottom: '16px',
+              marginTop: '6px',
+            }} />
+          {!isLastPage ? (
+            <img
+              src={inputPages[currentPage].image}
+              alt={`Page ${currentPage + 1}`}
+              style={{ maxWidth: '90%', minHeight: '90%', borderRadius: '4px' }} />
+          ) : (
+            <img
+              src={outputPage.image}
+              alt={`Page ${currentPage + 1}`}
+              style={{ maxWidth: '100%', minHeight: '97%', borderRadius: '4px' }} />
+          )}
+        </Box>
 
         <Box
-          display='flex'
-          justifyContent='space-between'
-          padding='15px'
-          backgroundColor='#fff'
-          borderTop='1px solid #ccc'
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            padding: '0 32px',
+          }}
         >
-          <Button
-            variant='contained'
-            onClick={handleBack}
-            disabled={currentPage === 0}
+          {isLastPage ? (
+            <OutputComponent
+              outputPage={outputPage}
+              calculatedValues={calculatedValues}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage} />
+          ) : (
+            <InputsComponent
+              page={inputPages[currentPage]}
+              inputValues={inputValues}
+              onInputChange={handleInputChange} />
+          )}
+
+          <Box
+            display='flex'
+            justifyContent='space-between'
+            padding='15px'
+            backgroundColor='#fff'
+            borderTop='1px solid #ccc'
           >
-            BACK
-          </Button>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handleNext}
-            disabled={currentPage === inputPages.length}
-          >
-            NEXT
-          </Button>
+            <Button
+              variant='contained'
+              onClick={handleBack}
+              disabled={currentPage === 0}
+            >
+              BACK
+            </Button>
+            <Button
+              variant='contained'
+              color='primary'
+              onClick={handleNext}
+              disabled={currentPage === inputPages.length}
+            >
+              NEXT
+            </Button>
+          </Box>
         </Box>
-      </Box>
-      <AlertBox />
-    </Container>
+        <AlertBox />
+      </Container></>
   );
 };
 
