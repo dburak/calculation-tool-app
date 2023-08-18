@@ -10,10 +10,13 @@ performCalculations = (formulaList, inputValues) => {
 
   const lowerCaseInputValues = Object.fromEntries(
     Object.entries(inputValues).map(([key, value]) => [
-      key,
-      value.toLowerCase(),
+      key.toLowerCase(),
+      value,
     ])
   );
+
+  console.log(lowerCaseFormulaList);
+  console.log(lowerCaseInputValues);
 
   Object.keys(lowerCaseInputValues).forEach((key) => {
     const inputFormula = lowerCaseInputValues[key];
