@@ -44,14 +44,19 @@ configurationsRouter.put(
 );
 
 // Since there will always be only one record in the database, there is no need to provide an id parametre here.
-configurationsRouter.delete('/', async (request, response) => {
-  try {
-    await configurationService.deleteConfiguration();
+configurationsRouter.delete(
+  '/',
+  // authCheck.tokenExtractor,  // There is a bug in production, commented for now.
+  // authCheck.userExtractor,
+  async (request, response) => {
+    try {
+      await configurationService.deleteConfiguration();
 
-    response.status(204).json({ message: 'Configuration deleted.' });
-  } catch (error) {
-    response.status(500).json({ error: 'Internal Server Error' });
+      response.status(204).json({ message: 'Configuration deleted.' });
+    } catch (error) {
+      response.status(500).json({ error: 'Internal Server Error' });
+    }
   }
-});
+);
 
 module.exports = configurationsRouter;
