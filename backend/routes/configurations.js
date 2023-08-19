@@ -1,7 +1,7 @@
 const configurationsRouter = require('express').Router();
 const configurationService = require('../services/configuration-service');
 
-const authCheck = require('../middleware/auth-check');
+const authChecker = require('../middleware/auth-checker');
 const fileUpload = require('../middleware/file-upload');
 
 configurationsRouter.get('/', async (request, response) => {
@@ -18,8 +18,8 @@ configurationsRouter.get('/', async (request, response) => {
 // Therefore, we can use the PUT method to both create and update purpose.
 configurationsRouter.put(
   '/',
-  authCheck.tokenExtractor,
-  authCheck.userExtractor,
+  authChecker.tokenExtractor,
+  authChecker.userExtractor,
   fileUpload.array('image'),
   async (request, response) => {
     try {
@@ -46,8 +46,8 @@ configurationsRouter.put(
 // Since there will always be only one record in the database, there is no need to provide an id parametre here.
 configurationsRouter.delete(
   '/',
-  // authCheck.tokenExtractor,  // There is a bug in production, commented for now.
-  // authCheck.userExtractor,
+  authChecker.tokenExtractor,  
+  authChecker.userExtractor,
   async (request, response) => {
     try {
       await configurationService.deleteConfiguration();
