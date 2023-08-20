@@ -25,11 +25,16 @@ const Navbar = ({ user }) => {
             Calculation Tool
           </Typography>
           <Button href='/app' color='inherit'>
-              App
+            App
+          </Button>
+          <Button href='/admin' color='inherit'>
+            Configuration Page
+          </Button>
+          {user && (
+            <Button href='/customers' color='inherit'>
+              Customers
             </Button>
-            <Button href='/admin' color='inherit'>
-              Configuration Page
-            </Button>
+          )}
           {!user ? (
             <Button href='/login' color='inherit'>
               Login

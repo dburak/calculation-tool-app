@@ -6,7 +6,6 @@ import {
   Container,
   LinearProgress,
   Typography,
-  CircularProgress,
 } from '@mui/material';
 import InputsComponent from './InputsComponent';
 import OutputComponent from './OutputComponent';
@@ -15,6 +14,7 @@ import AlertBox from '../shared/AlertBox';
 import { getReduxConfig } from '../../reducers/configurationReducer';
 import { setReduxAlert } from '../../reducers/alertReducer';
 import calculationService from '../../services/calculation';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 const CalculationPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -84,7 +84,6 @@ const CalculationPage = () => {
     }));
   };
 
-
   if (!configs) {
     return (
       <Container
@@ -107,34 +106,17 @@ const CalculationPage = () => {
   const isLastPage = currentPage === inputPages.length;
 
   return (
-    <><Container>
-      {isLoadingConfigs && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(255, 255, 255, 0.8)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 9999,
-          }}
-        >
-          <CircularProgress />
-        </div>
-      )}
-    </Container><Container
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1.5fr 1fr',
-        minHeight: '90vh',
-        minWidth: '100vw',
-        padding: '24px',
-      }}
-    >
+    <>
+      <Container>{isLoadingConfigs && <LoadingSpinner />}</Container>
+      <Container
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1.5fr 1fr',
+          minHeight: '90vh',
+          minWidth: '100vw',
+          padding: '24px',
+        }}
+      >
         <Box
           mt={2}
           mb={2}
@@ -146,21 +128,28 @@ const CalculationPage = () => {
             variant='determinate'
             value={(currentPage / inputPages.length) * 100}
             style={{
-              height: '8px',
-              borderRadius: '16px',
+              height: '10px',
+              borderRadius: '5px',
               marginBottom: '16px',
               marginTop: '6px',
-            }} />
+            }}
+          />
           {!isLastPage ? (
             <img
               src={inputPages[currentPage].image}
               alt={`Page ${currentPage + 1}`}
-              style={{ maxWidth: '90%', minHeight: '90%', borderRadius: '4px' }} />
+              style={{ maxWidth: '90%', minHeight: '90%', borderRadius: '4px' }}
+            />
           ) : (
             <img
               src={outputPage.image}
               alt={`Page ${currentPage + 1}`}
-              style={{ maxWidth: '100%', minHeight: '97%', borderRadius: '4px' }} />
+              style={{
+                maxWidth: '100%',
+                minHeight: '97%',
+                borderRadius: '4px',
+              }}
+            />
           )}
         </Box>
 
@@ -177,12 +166,14 @@ const CalculationPage = () => {
               outputPage={outputPage}
               calculatedValues={calculatedValues}
               setCurrentPage={setCurrentPage}
-              currentPage={currentPage} />
+              currentPage={currentPage}
+            />
           ) : (
             <InputsComponent
               page={inputPages[currentPage]}
               inputValues={inputValues}
-              onInputChange={handleInputChange} />
+              onInputChange={handleInputChange}
+            />
           )}
 
           <Box
@@ -210,7 +201,8 @@ const CalculationPage = () => {
           </Box>
         </Box>
         <AlertBox />
-      </Container></>
+      </Container>
+    </>
   );
 };
 

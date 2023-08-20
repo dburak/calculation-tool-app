@@ -17,6 +17,7 @@ performCalculations = (formulaList, inputValues) => {
 
   Object.keys(lowerCaseInputValues).forEach((key) => {
     const inputFormula = lowerCaseInputValues[key];
+    console.log(inputFormula)
     try {
       const inputResult = math.evaluate(inputFormula, evaluatedValues);
       evaluatedValues[key] = inputResult;
@@ -38,6 +39,7 @@ performCalculations = (formulaList, inputValues) => {
             ? evaluatedValues[variable]
             : match
       );
+
 
       const formulaResult = math.evaluate(modifiedFormula, evaluatedValues);
       evaluatedValues[formulaKey] = formulaResult;

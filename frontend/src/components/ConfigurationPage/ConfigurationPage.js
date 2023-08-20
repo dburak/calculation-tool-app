@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Button,
-  TextField,
-  Container,
-  Typography,
-  Grid,
-  CircularProgress,
-  Box,
-} from '@mui/material';
+import { Button, TextField, Container, Typography, Grid } from '@mui/material';
 import Inputs from './Inputs';
 import Output from './Output';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import AlertBox from '../shared/AlertBox';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -196,26 +189,7 @@ const ConfigurationPage = () => {
 
   return (
     <Container>
-      <Container>
-        {isLoading && (
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(255, 255, 255, 0.8)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 9999,
-            }}
-          >
-            <CircularProgress />
-          </div>
-        )}
-      </Container>
+      <Container>{isLoading && <LoadingSpinner />}</Container>
       <Typography
         mt={2}
         variant='h4'

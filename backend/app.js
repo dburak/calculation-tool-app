@@ -10,6 +10,7 @@ const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const configurationsRouter = require('./routes/configurations');
 const calculationRouter = require('./routes/calculation');
+const customersRouter = require('./routes/customers');
 
 const errorHandler = require('./middleware/error-handler');
 
@@ -26,6 +27,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/configurations', configurationsRouter);
 app.use('/api/calculation', calculationRouter);
+app.use('/api/customers', customersRouter);
 
 app.use(errorHandler);
 
