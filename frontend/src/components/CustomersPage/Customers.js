@@ -101,7 +101,14 @@ const Customers = () => {
       </Typography>
       <Grid container justifyContent='center'>
         <Grid item xs={12} md={8}>
-          <div style={{ height: '40px' }}>
+          <div
+            style={{
+              height: '40px',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              marginBottom: "8px"
+            }}
+          >
             {selectedCustomers.length > 0 && (
               <Button
                 startIcon={<DeleteIcon />}
