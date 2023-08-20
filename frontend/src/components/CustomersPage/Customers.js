@@ -101,9 +101,7 @@ const Customers = () => {
       </Typography>
       <Grid container justifyContent='center'>
         <Grid item xs={12} md={8}>
-          <div
-            style={{ height: '40px', display: 'flex', alignItems: 'center' }}
-          >
+          <div style={{ marginTop: '20px' }}>
             {selectedCustomers.length > 0 && (
               <Button
                 startIcon={<DeleteIcon />}
@@ -111,12 +109,11 @@ const Customers = () => {
                 size='medium'
                 color='secondary'
                 onClick={handleDeleteSelected}
+                style={{ marginBottom: '10px' }}
               >
                 Delete
               </Button>
             )}
-          </div>
-          <div>
             <TableContainer
               component={Paper}
               elevation={4}
@@ -133,8 +130,8 @@ const Customers = () => {
                     </TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Surname</TableCell>
-                    <TableCell>Phone</TableCell>
-                    <TableCell></TableCell> {/* Empty header cell */}
+                    <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>Phone</TableCell>
+                    <TableCell> </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -159,7 +156,7 @@ const Customers = () => {
                       </TableCell>
                       <TableCell>{customer.name}</TableCell>
                       <TableCell>{customer.surname}</TableCell>
-                      <TableCell>{customer.phoneNumber}</TableCell>
+                      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>{customer.phoneNumber}</TableCell>
                       <TableCell>
                         <a
                           href={`tel:${customer.phoneNumber}`}
