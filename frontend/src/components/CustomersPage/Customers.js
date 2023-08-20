@@ -130,7 +130,11 @@ const Customers = () => {
                     </TableCell>
                     <TableCell>Name</TableCell>
                     <TableCell>Surname</TableCell>
-                    <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>Phone</TableCell>
+                    <TableCell
+                      sx={{ display: { xs: 'none', md: 'table-cell' } }}
+                    >
+                      Phone
+                    </TableCell>
                     <TableCell> </TableCell>
                   </TableRow>
                 </TableHead>
@@ -156,13 +160,18 @@ const Customers = () => {
                       </TableCell>
                       <TableCell>{customer.name}</TableCell>
                       <TableCell>{customer.surname}</TableCell>
-                      <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>{customer.phoneNumber}</TableCell>
+                      <TableCell
+                        sx={{ display: { xs: 'none', md: 'table-cell' } }}
+                      >
+                        {customer.phoneNumber}
+                      </TableCell>
                       <TableCell>
                         <a
                           href={`tel:${customer.phoneNumber}`}
                           style={{ textDecoration: 'none', color: 'green' }}
                         >
                           <Button
+                            fullWidth
                             variant='outlined'
                             startIcon={<PhoneIcon />}
                             style={{
