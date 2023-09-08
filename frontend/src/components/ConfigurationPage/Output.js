@@ -4,7 +4,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import ImageUpload from '../shared/ImageUpload';
 
+import configurationService from '../../services/configuration';
+
 const Output = ({
+  id,
   title,
   description,
   outputValues,
@@ -18,7 +21,8 @@ const Output = ({
     onOutputChange(title, description, newOutputValues, outputUnit, image);
   };
 
-  const handleRemoveOutput = (localIndex) => {
+  const handleRemoveOutput = async (localIndex, id) => {
+    if (id) await configurationService.deleteOutputValue(id);
     if (outputValues.length > 1) {
       const newOutputValues = [...outputValues];
       newOutputValues.splice(localIndex, 1);
@@ -119,7 +123,7 @@ const Output = ({
                 variant='contained'
                 size='medium'
                 color='secondary'
-                onClick={() => handleRemoveOutput(localIndex)}
+                onClick={() => handleRemoveOutput(localIndex, output.id)}
               >
                 Remove Output
               </Button>

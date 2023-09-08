@@ -4,10 +4,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import AlertBox from '../shared/AlertBox';
 
+import configurationService from '../../services/configuration';
+
 import ImageUpload from '../shared/ImageUpload';
 
 const Inputs = ({
   index,
+  id,
   title,
   description,
   inputValues,
@@ -20,7 +23,9 @@ const Inputs = ({
     onInputChange(index, title, description, newInputValues, image);
   };
 
-  const handleRemoveInput = (localIndex) => {
+  const handleRemoveInput = async (localIndex, id) => {
+    if (id) await configurationService.deleteInputValue(id);
+
     if (inputValues.length > 1) {
       const newInputValues = [...inputValues];
       newInputValues.splice(localIndex, 1);
@@ -116,7 +121,7 @@ const Inputs = ({
                 variant='contained'
                 size='medium'
                 color='secondary'
-                onClick={() => handleRemoveInput(localIndex)}
+                onClick={() => handleRemoveInput(localIndex, input.id)}
               >
                 Remove Input
               </Button>

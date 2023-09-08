@@ -8,6 +8,8 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import AlertBox from '../shared/AlertBox';
 import LoadingSpinner from '../shared/LoadingSpinner';
 
+import configurationService from '../../services/configuration';
+
 import { useDispatch, useSelector } from 'react-redux';
 import {
   saveReduxConfig,
@@ -66,7 +68,12 @@ const ConfigurationPage = () => {
     }
   };
 
-  const handleRemoveInputPage = () => {
+  const handleRemoveInputPage = async () => {
+    const removedPage = inputPages[inputPages.length - 1];
+
+    if (removedPage && removedPage.id) {
+      await configurationService.deleteInputPage(removedPage.id);
+    }
     setInputPages(inputPages.slice(0, -1));
     if (inputPages.length === 1) {
       setShowInputs(false);
@@ -85,12 +92,27 @@ const ConfigurationPage = () => {
     image
   ) => {
     const updatedInputPages = [...inputPages];
-    updatedInputPages[pageIndex] = {
-      title,
-      description,
-      inputValues,
-      image,
-    };
+
+    if (inputPages && inputPages[pageIndex].hasOwnProperty('id')) {
+      updatedInputPages[pageIndex] = {
+        id:
+          configs !== '' && configs !== null
+            ? configs.inputPages[pageIndex].id
+            : undefined,
+        title,
+        description,
+        inputValues,
+        image,
+      };
+    } else {
+      updatedInputPages[pageIndex] = {
+        title,
+        description,
+        inputValues,
+        image,
+      };
+    }
+
     setInputPages(updatedInputPages);
   };
 
@@ -122,7 +144,14 @@ const ConfigurationPage = () => {
 
   const handleSave = () => {
     setIsLoading(true);
-    dispatch(saveReduxConfig(inputPages, outputPage, formulaList))
+    dispatch(
+      saveReduxConfig(
+        inputPages,
+        outputPage,
+        formulaList,
+        configs !== null ? configs.configurationId : undefined
+      )
+    )
       .then(() => {
         dispatch(getReduxConfig())
           .then(() => {
@@ -170,6 +199,7 @@ const ConfigurationPage = () => {
             4
           )
         );
+
         setInputPages([]);
         setOutputPage({});
         setFormulaList([]);
@@ -283,6 +313,7 @@ const ConfigurationPage = () => {
                 Output Page
               </Typography>
               <Output
+                id={outputPage.id}
                 title={outputPage.title}
                 description={outputPage.description}
                 image={outputPage.image}

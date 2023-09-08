@@ -18,7 +18,12 @@ const configurationSlice = createSlice({
   },
 });
 
-export const saveReduxConfig = (inputPages, outputPage, formulaList) => {
+export const saveReduxConfig = (
+  inputPages,
+  outputPage,
+  formulaList,
+  configurationId
+) => {
   return async (dispatch) => {
     let formData = new FormData();
     const formulaCheckingData = {};
@@ -44,10 +49,13 @@ export const saveReduxConfig = (inputPages, outputPage, formulaList) => {
     formData.append('outputPage', JSON.stringify(outputPage));
     formData.append('formulaList', JSON.stringify(formulaList));
 
-    await calculationService.sendCalculation({
-      formulaList,
-      inputValues: formulaCheckingData,
-    });
+    if (configurationId)
+      formData.append('configurationId', JSON.stringify(configurationId));
+
+    // await calculationService.sendCalculation({
+    //   formulaList,
+    //   inputValues: formulaCheckingData,
+    // });
 
     const newConfig = await configurationService.sendConfig(formData);
     dispatch(setConfiguration(newConfig));
@@ -67,6 +75,7 @@ export const removeReduxConfig = () => {
     dispatch(removeConfiguration());
   };
 };
+
 
 export const { setConfiguration, removeConfiguration, getConfiguration } =
   configurationSlice.actions;

@@ -10,7 +10,7 @@ const PageComponent = ({ page, inputValues, onInputChange }) => {
       </Typography>
       <Box mt={4}>
         {page.inputValues.map((inputValue) => (
-          <Box key={inputValue._id} mb={2}>
+          <Box key={inputValue.id} mb={2}>
             <TextField
               type='number'
               label={inputValue.placeholder}

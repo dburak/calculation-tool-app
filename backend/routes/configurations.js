@@ -18,8 +18,6 @@ configurationsRouter.get('/', async (request, response) => {
 // Therefore, we can use the PUT method to both create and update purpose.
 configurationsRouter.put(
   '/',
-  authChecker.tokenExtractor,
-  authChecker.userExtractor,
   fileUpload.array('image'),
   async (request, response) => {
     try {
@@ -46,8 +44,8 @@ configurationsRouter.put(
 // Since there will always be only one record in the database, there is no need to provide an id parametre here.
 configurationsRouter.delete(
   '/',
-  authChecker.tokenExtractor,  
-  authChecker.userExtractor,
+  // authChecker.tokenExtractor,  
+  // authChecker.userExtractor,
   async (request, response) => {
     try {
       await configurationService.deleteConfiguration();

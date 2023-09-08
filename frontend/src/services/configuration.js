@@ -17,6 +17,7 @@ const sendConfig = async (credentials) => {
     headers: {
       authorization: token,
       'Content-Type': 'multipart/form-data',
+      //'Content-Type': 'application/json',
     },
   });
   return response.data;
@@ -27,5 +28,34 @@ const deleteConfig = async () => {
   return response.data;
 };
 
+const deleteInputValue = async (id) => {
+  const response = await axios.delete(
+    `${baseUrl}/configurations/inputpage/value/${id}`
+  );
+  return response.data;
+};
+
+const deleteInputPage = async (id) => {
+  const response = await axios.delete(
+    `${baseUrl}/configurations/inputpage/${id}`
+  );
+  return response.data;
+};
+
+const deleteOutputValue = async (id) => {
+  const response = await axios.delete(
+    `${baseUrl}/configurations/outputpage/value/${id}`
+  );
+  return response.data;
+};
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getConfigs, sendConfig, deleteConfig, setToken };
+export default {
+  getConfigs,
+  sendConfig,
+  deleteConfig,
+  setToken,
+  deleteInputValue,
+  deleteInputPage,
+  deleteOutputValue,
+};
